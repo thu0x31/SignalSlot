@@ -2,3 +2,6 @@ test/build/*
 !test/build/compile_commands.json
 
 test/.cache
+.cache
+
+.vscode/launch.json
