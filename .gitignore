@@ -1,1 +1,2 @@
-test/build
+test/build/*
+!test/build/compile_commands.json

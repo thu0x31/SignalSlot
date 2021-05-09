@@ -1,0 +1,13 @@
+[
+{
+  "directory": "/home/thu/code/Signal_Slot/test/build",
+  "command": "/usr/bin/c++ -std=c++2a -MD -MT CMakeFiles/SignalSlotTest.dir/test.cpp.o -MF CMakeFiles/SignalSlotTest.dir/test.cpp.o.d -o CMakeFiles/SignalSlotTest.dir/test.cpp.o -c /home/thu/code/Signal_Slot/test/test.cpp",
+  "file": "/home/thu/code/Signal_Slot/test/test.cpp"
+},
+
+{
+  "directory": "/home/thu/code/Signal_Slot/test/build",
+  "command": "/usr/bin/c++ -std=c++2a -MD -MT CMakeFiles/SignalSlotTest.dir/test.cpp.o -MF CMakeFiles/SignalSlotTest.dir/test.cpp.o.d -c /home/thu/code/Signal_Slot/Signal.hpp",
+  "file": "/home/thu/code/Signal_Slot/Signal.hpp"
+}
+]
