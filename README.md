@@ -1,11 +1,13 @@
 # SignalSlot
+Header Only
 
 ## Test
 ```
+$ mkdir test/build
 $ cd test/build
 $ cmake ..
 $ ctest
 ```
 
-## vscode 
+### vscode 
 `CMake: Run Tests`
