@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/thu/code/Signal_Slot/test/build",
-  "command": "/bin/c++ -g -std=c++2a -o CMakeFiles/SignalSlotTest.dir/test.cpp.o -c /home/thu/code/Signal_Slot/test/test.cpp",
-  "file": "/home/thu/code/Signal_Slot/test/test.cpp"
-}
-]
