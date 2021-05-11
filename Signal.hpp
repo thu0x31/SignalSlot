@@ -26,11 +26,13 @@ public:
     using Slot = std::function<ReturnType(Args...)>;
     std::list<Slot> slotList;
 
+    using Connection = thuw::Connection<ReturnType(Args...)>;
+
     Signal() = default;
     
-    [[nodiscard]] thuw::Connection<ReturnType(Args...)> connect(const Slot&& slot) {
+    [[nodiscard]] Connection connect(const Slot&& slot) {
         auto&& itr = this->slotList.insert(this->slotList.end(), slot);
-        return thuw::Connection<ReturnType(Args...)>(this->slotList, itr);
+        return Connection(this->slotList, itr);
     }
 
     template<typename ...Args_>
