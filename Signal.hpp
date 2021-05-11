@@ -65,6 +65,10 @@ public:
         return container;
     }
 
+    bool hasSlot() const {
+        return this->slotList.size() != 0;
+    }
+
     //TODO: map
     // template<template<class, class Allocator=std::allocator<ReturnType>> class Container>
     // requires std::same_as<ReturnType, std::pair<ReturnType.firs>>
