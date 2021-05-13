@@ -9,8 +9,11 @@
 #include <memory>
 #include <type_traits>
 #include <utility>
-#include <vector>
 #include <concepts>
+
+#ifndef NDEBUG
+    #include <iostream>
+#endif
 
 namespace thuw {
     template<typename ReturnType, typename ...Args>
@@ -32,6 +35,11 @@ public:
     
     [[nodiscard]] Connection connect(const Slot&& slot) {
         auto&& itr = this->slotList.insert(this->slotList.end(), slot);
+
+        #ifndef NDEBUG
+            std::cout << "Signal Slot Size : " << this->slotList.size() << std::endl;
+        #endif
+
         return Connection(this->slotList, itr);
     }
 
@@ -42,6 +50,10 @@ public:
         for(auto& slot : this->slotList) {
             slot(std::forward<Args_>(args)...);
         }
+
+        #ifndef NDEBUG
+            // std::cout << "execute SignalList" << std::endl;
+        #endif
     }
 
     template<typename ...Args_>
@@ -61,12 +73,16 @@ public:
             *itr = slot(std::forward<Args>(args)...);
             ++itr;
         }
+
+        #ifndef NDEBUG
+            std::cout << "execute SignalList" << std::endl;
+        #endif
         
         return container;
     }
 
     bool hasSlot() const {
-        return this->slotList.size() != 0;
+        return this->slotList.size() > 0;
     }
 
     //TODO: map
@@ -118,8 +134,21 @@ public:
     }
 
     void disconnect() {
-        if(this->slotList == nullptr)
+        if(this->slotList == nullptr) {
             return;
+        }
+
+        #ifndef NDEBUG
+            std::cout << "----------" << std::endl;
+            std::cout << "Connection::SlotList Size : " << this->slotList->size() << std::endl;
+
+            for(auto itr = this->slotList->begin(); itr != this->slotList->end(); ++itr) {
+                std::cout << "Connection::SlotList address : " << &(*itr) << std::endl;
+            }
+
+            std::cout << "Connection::Iterator address : " << &(*this->iterator) << std::endl;
+            std::cout << "----------" << std::endl;
+        #endif
 
         this->slotList->erase(this->iterator);
     }
