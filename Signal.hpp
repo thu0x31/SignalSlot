@@ -7,6 +7,7 @@
 #include <iterator>
 #include <list>
 #include <memory>
+#include <ostream>
 #include <type_traits>
 #include <utility>
 #include <concepts>
@@ -46,24 +47,35 @@ public:
     template<typename ...Args_>
     void operator()(Args_&& ...args) const
     requires std::same_as<ReturnType, void>
-    {
-        for(auto& slot : this->slotList) {
+    {        
+        for(auto& slot : this->slotList) {       
             slot(std::forward<Args_>(args)...);
         }
-
-        #ifndef NDEBUG
-            // std::cout << "execute SignalList" << std::endl;
-        #endif
     }
 
     template<typename ...Args_>
-    std::vector<ReturnType> operator()(Args_&& ...args) const 
+    [[nodiscard]] std::vector<ReturnType> operator()(Args_&& ...args) const 
     {
         return this->execute<std::vector>(std::forward<Args_>(args)...);
     }
 
+    template<typename Condition, typename ...Args_>
+    [[nodiscard]] std::vector<ReturnType> conditionalExecute(Condition conditions, Args_&& ...args) const
+    {
+        std::vector<ReturnType> vec;
+
+        for (const auto& slot : this->slotList) {            
+            ReturnType result = slot(std::forward<Args>(args)...);
+            if(conditions(result)) {
+                vec.push_back(result);
+            };
+        }
+        
+        return std::move(vec);
+    }    
+
     template<template<class, class Allocator=std::allocator<ReturnType>> class Container>
-    Container<ReturnType> execute(Args&& ... args) const 
+    [[nodiscard]] Container<ReturnType> execute(Args&& ... args) const 
     {
         Container<ReturnType> container(this->slotList.size());
         
@@ -73,10 +85,6 @@ public:
             *itr = slot(std::forward<Args>(args)...);
             ++itr;
         }
-
-        #ifndef NDEBUG
-            std::cout << "execute SignalList" << std::endl;
-        #endif
         
         return container;
     }
@@ -139,13 +147,15 @@ public:
         }
 
         #ifndef NDEBUG
+            std::cout << "--------------------" << std::endl;
+            std::cout << "Disconnect" << std::endl;
             std::cout << "----------" << std::endl;
             std::cout << "Connection::SlotList Size : " << this->slotList->size() << std::endl;
-
+            std::cout << "----------" << std::endl;
             for(auto itr = this->slotList->begin(); itr != this->slotList->end(); ++itr) {
                 std::cout << "Connection::SlotList address : " << &(*itr) << std::endl;
             }
-
+            std::cout << "----------" << std::endl;
             std::cout << "Connection::Iterator address : " << &(*this->iterator) << std::endl;
             std::cout << "----------" << std::endl;
         #endif
